@@ -15,6 +15,7 @@ import 'package:openvpn_flutter/openvpn_flutter.dart';
 import 'package:toastification/toastification.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../core/ads/ad_helper.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/services/hive/models/vpn_history.dart';
 import '../../domain/entities/vpn.dart';
@@ -297,175 +298,198 @@ class _VpnHomePageState extends State<VpnHomePage> {
   Widget build(BuildContext context) {
     bool isConnected = stage?.compareTo('connected') == 0;
     return Scaffold(
-      body: BlocConsumer<VpnBloc, VpnState>(
-        listener: (context, state) {
-          if (state is VpnSelect) {
-            showToast(
-              type: ToastificationType.success,
-              description: '${state.server.countryLong} selected',
-            );
-          }
-          if (state is VpnConnected) {
-            showToast(
-              type: ToastificationType.success,
-              description: '${state.server.countryLong} connected',
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is VpnSelect) {
-            debugPrint('Selected Server = ${state.server.countryLong}');
-          }
-          if (state is VpnConnected) {
-            debugPrint('Connected Server = ${state.server.countryLong}');
-          }
-          return SafeArea(
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                // World Map Image
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(vertical: 64.0),
-                //   child: Image.asset(
-                //     width: double.infinity,
-                //     'assets/images/disconnected_map.png',
-                //     fit: BoxFit.cover,
-                //   ),
-                // ),
-                // Main content
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    spacing: 2.0,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          context.push(
-                            '${AppRoutes.vpnHome}${AppRoutes.vpnHistory}',
-                          );
-                        },
-                        child: Text('Vpn History'),
-                      ),
-                      // Change Location Button
-                      ChangeLocationButton(
-                        onPressed: () => changeLocation(state),
-                        isConnected: isConnected,
-                      ),
-                      // Country Text
-                      switch (state) {
-                        VpnInitial() => Text(
-                          'No Location Selected',
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
-                            color:
-                                isConnected
-                                    ? AppPalette.primaryColor
-                                    : Colors.orange,
-                          ),
-                        ),
-                        VpnLoading() => Text(
-                          'No Location Selected',
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
-                            color:
-                                isConnected
-                                    ? AppPalette.primaryColor
-                                    : Colors.orange,
-                          ),
-                        ),
-                        VpnSelect() => Text(
-                          state.server.countryLong,
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
-                            color:
-                                isConnected
-                                    ? AppPalette.primaryColor
-                                    : Colors.orange,
-                          ),
-                        ),
-                        VpnConnected() => Text(
-                          state.server.countryLong,
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
-                            color:
-                                isConnected
-                                    ? AppPalette.primaryColor
-                                    : Colors.orange,
-                          ),
-                        ),
-                        VpnDisconnected() => Text(
-                          state.server.countryLong,
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
-                            color:
-                                isConnected
-                                    ? AppPalette.primaryColor
-                                    : Colors.orange,
-                          ),
-                        ),
-                      },
-                      // Vpn Connection Duration
-                      Text(
-                        isConnected ? '${status?.duration}' : '00:00',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color:
-                              isConnected
-                                  ? AppPalette.primaryColor
-                                  : Colors.orange,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Bottom container pinned
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    width: double.infinity,
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(48.0),
-                          topRight: Radius.circular(48.0),
-                        ),
-                      ),
-                      color:
-                          isConnected ? AppPalette.primaryColor : Colors.orange,
-                    ),
-                    padding: EdgeInsets.all(32),
+      body: SafeArea(
+        child: BlocConsumer<VpnBloc, VpnState>(
+          listener: (context, state) {
+            if (state is VpnSelect) {
+              showToast(
+                type: ToastificationType.success,
+                description: '${state.server.countryLong} selected',
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is VpnSelect) {
+              debugPrint('Selected Server = ${state.server.countryLong}');
+            }
+            if (state is VpnConnected) {
+              debugPrint('Connected Server = ${state.server.countryLong}');
+            }
+            return SafeArea(
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  // World Map Image
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(vertical: 64.0),
+                  //   child: Image.asset(
+                  //     width: double.infinity,
+                  //     'assets/images/disconnected_map.png',
+                  //     fit: BoxFit.cover,
+                  //   ),
+                  // ),
+                  // Main content
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
-                      spacing: 16.0,
-                      mainAxisSize: MainAxisSize.min,
+                      spacing: 2.0,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        //  SizedBox(height: 24),
-                        // VPN Button
-                        VpnButton(
-                          onTap: () => toggleVpnConnection(state),
-                          hostAddress: _ip,
-                          stage: stage,
-                          isConnected: stage?.compareTo('connected') == 0,
-                        ),
-                        // Upload and Download
-                        BytesInOutWidget(
+                        SizedBox(height: 16.0),
+                        // ElevatedButton(
+                        //   onPressed: () {
+                        //     context.push(
+                        //       '${AppRoutes.vpnHome}${AppRoutes.vpnHistory}',
+                        //     );
+                        //   },
+                        //   child: Text('Vpn History'),
+                        // ),
+                        // Change Location Button
+                        ChangeLocationButton(
+                          onPressed: () => changeLocation(state),
                           isConnected: isConnected,
-                          status: status,
+                        ),
+                        // Country Text
+                        switch (state) {
+                          VpnInitial() => Text(
+                            'No Location Selected',
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  isConnected
+                                      ? AppPalette.primaryColor
+                                      : Colors.orange,
+                            ),
+                          ),
+                          VpnLoading() => Text(
+                            'No Location Selected',
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  isConnected
+                                      ? AppPalette.primaryColor
+                                      : Colors.orange,
+                            ),
+                          ),
+                          VpnSelect() => Text(
+                            state.server.countryLong,
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  isConnected
+                                      ? AppPalette.primaryColor
+                                      : Colors.orange,
+                            ),
+                          ),
+                          VpnConnected() => Text(
+                            state.server.countryLong,
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  isConnected
+                                      ? AppPalette.primaryColor
+                                      : Colors.orange,
+                            ),
+                          ),
+                          VpnDisconnected() => Text(
+                            state.server.countryLong,
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  isConnected
+                                      ? AppPalette.primaryColor
+                                      : Colors.orange,
+                            ),
+                          ),
+                        },
+                        // Vpn Connection Duration
+                        Text(
+                          isConnected ? '${status?.duration}' : '00:00',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color:
+                                isConnected
+                                    ? AppPalette.primaryColor
+                                    : Colors.orange,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                  // Bottom container pinned
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      width: double.infinity,
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(48.0),
+                            topRight: Radius.circular(48.0),
+                          ),
+                        ),
+                        color:
+                            isConnected
+                                ? AppPalette.primaryColor
+                                : Colors.orange,
+                      ),
+                      padding: EdgeInsets.all(32),
+                      child: Column(
+                        spacing: 16.0,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          //  SizedBox(height: 24),
+                          // VPN Button
+                          VpnButton(
+                            onTap: () async {
+                              final isConnected = await engine.isConnected();
+                              Vpn? selectedServer;
+                              if (state is VpnSelect ||
+                                  state is VpnDisconnected ||
+                                  state is VpnConnected) {
+                                selectedServer = (state as dynamic).server;
+                              }
+                              if (!isConnected && selectedServer != null) {
+                                AdHelper.showRewardedAd(
+                                  onAdCompleted:
+                                      () => toggleVpnConnection(state),
+                                  onAdFailed:
+                                      () => showToast(
+                                        type: ToastificationType.error,
+                                        description:
+                                            'Ad failed to load. Please try again.',
+                                      ),
+                                );
+                              } else {
+                                // If already connected, disconnect directly (no ad)
+                                toggleVpnConnection(state);
+                              }
+                            },
+                            hostAddress: _ip,
+                            stage: stage,
+                            isConnected: stage?.compareTo('connected') == 0,
+                          ),
+
+                          // Upload and Download
+                          BytesInOutWidget(
+                            isConnected: isConnected,
+                            status: status,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
