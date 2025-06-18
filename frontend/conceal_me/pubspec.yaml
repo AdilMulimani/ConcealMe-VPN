@@ -59,9 +59,11 @@ dependencies:
 # permission
   permission_handler:
 # storage
-  flutter_secure_storage:
+  flutter_secure_storage: ^8.0.0
   hive:
   hive_flutter:
+# ads
+  google_mobile_ads: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -82,15 +84,15 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
    [.env,
-#    assets/images/2k_earth-day.jpg,
-#    assets/images/2k_stars.jpg,
-#    assets/images/acknowledge.png,
-#    assets/images/apple.svg,
-#    assets/images/facebook.svg,
-#    assets/images/google.svg,
-#    assets/images/lock.png,
-#    assets/images/shield.png,
-#    assets/images/success_image.png
+    assets/images/2k_earth-day.jpg,
+   assets/images/2k_stars.jpg,
+  assets/images/acknowledge.png,
+    assets/images/apple.svg,
+    assets/images/facebook.svg,
+    assets/images/google.svg,
+    assets/images/lock.png,
+    assets/images/shield.png,
+    assets/images/success_image.png
    ]
 
 
