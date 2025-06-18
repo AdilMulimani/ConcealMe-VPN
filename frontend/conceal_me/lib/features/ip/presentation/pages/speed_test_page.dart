@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_test_plus/flutter_speed_test_plus.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../../../core/ads/ad_helper.dart';
 import '../widgets/speed_test/loading_widget.dart';
 import '../widgets/speed_test/network_component_card.dart';
 import '../widgets/speed_test/result_widget.dart';
@@ -214,16 +215,33 @@ class _SpeedTestScreenState extends State<SpeedTestScreen> {
       await _internetSpeedTest.startTesting(
         useFastApi: true,
         onCompleted: (download, upload) {
-          setState(() {
-            _isTestComplete = true;
-            _finalDownloadRate = double.parse(
-              (download.transferRate).toStringAsPrecision(3),
-            );
-            _finalUploadRate = double.parse(
-              (upload.transferRate).toStringAsPrecision(3),
-            );
-          });
+          AdHelper.showInterstitialAd(
+            onAdDismissed: () {
+              setState(() {
+                _isTestComplete = true;
+                _finalDownloadRate = double.parse(
+                  (download.transferRate).toStringAsPrecision(3),
+                );
+                _finalUploadRate = double.parse(
+                  (upload.transferRate).toStringAsPrecision(3),
+                );
+              });
+            },
+            onAdFailed: () {
+              // Show results anyway if ad fails
+              setState(() {
+                _isTestComplete = true;
+                _finalDownloadRate = double.parse(
+                  (download.transferRate).toStringAsPrecision(3),
+                );
+                _finalUploadRate = double.parse(
+                  (upload.transferRate).toStringAsPrecision(3),
+                );
+              });
+            },
+          );
         },
+
         onProgress: (percent, data) {
           setState(() {
             if (data.type == TestType.download) {
