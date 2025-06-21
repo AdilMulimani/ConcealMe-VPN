@@ -405,8 +405,6 @@ GMAIL_USER=your_email@example.com
 GMAIL_PASSWORD=your_app_password
 VPN_SERVER_URL=https://vpngate.net/api/iphone/
 GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
-ONESIGNAL_APP_ID=your-onesignal-app-id
-ONESIGNAL_API_KEY=your-onesignal-api-key
 ```
 
 ### 4. Run the Backend
