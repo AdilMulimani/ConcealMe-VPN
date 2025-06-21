@@ -99,7 +99,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.vpnHome,
+  initialLocation: AppRoutes.signIn,
   debugLogDiagnostics: true,
   navigatorKey: _rootNavigatorKey,
   routes: [

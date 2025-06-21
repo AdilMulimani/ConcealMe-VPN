@@ -11,7 +11,10 @@ import 'package:conceal_me/features/vpn/presentation/blocs/vpn_bloc/vpn_bloc.dar
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
+import 'core/ads/ad_helper.dart';
 import 'core/services/hive/models/vpn_history.dart';
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
 import 'features/auth/data/repositories/auth_local_repository_impl.dart';
@@ -50,6 +53,14 @@ Future<void> initDependencies() async {
   //await Hive.deleteBoxFromDisk('vpnHistoryBox');
   Hive.registerAdapter(VpnHistoryAdapter());
   await Hive.openBox<VpnHistory>('vpnHistoryBox');
+  // Load hydrated bloc
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: HydratedStorageDirectory(
+      (await getTemporaryDirectory()).path,
+    ),
+  );
+  // Load Ads
+  await AdHelper.initializeAdMob();
   // initialise auth
   _initAuth();
   // initialise vpn

@@ -5,8 +5,6 @@ import 'package:conceal_me/features/vpn/presentation/blocs/filtered_vpn_bloc/fil
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:toastification/toastification.dart';
 
@@ -24,20 +22,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Load env variables
   await dotenv.load(fileName: '.env');
-  // Setup Hydrated Bloc Storage
-  // // Clear previous storage if needed
-  // final directory = await getTemporaryDirectory();
-  // final storageDir = Directory('${directory.path}/hydrated_bloc');
-  // if (await storageDir.exists()) {
-  //   await storageDir.delete(recursive: true);
-  //   debugPrint('Cleared previous hydrated storage');
-  // }
 
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: HydratedStorageDirectory(
-      (await getTemporaryDirectory()).path,
-    ),
-  );
   //Set up code dependencies
   await initDependencies();
 
