@@ -451,7 +451,7 @@ flutter run
 
 Watch a full walkthrough of the ConcealMe-VPN app in action:
 
-[![Watch the Demo](https://img.youtube.com/vi/1ha3gzOs6R4/hqdefault.jpg)](https://www.youtube.com/watch?v=1ha3gzOs6R4)
+[![Watch the Demo](https://img.youtube.com/vi/uREYec8ylgI/hqdefault.jpg)](https://youtu.be/uREYec8ylgI?feature=shared)
 
 ---
 
