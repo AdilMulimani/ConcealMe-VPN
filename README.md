@@ -336,12 +336,11 @@ The project is structured using a **modular clean architecture** approach with s
 ride-hail-backend/
 ├── src/                           # Main source code
 │   ├── controllers/              # Handle HTTP requests and responses
-│   ├── db/                       # Database connection & models (e.g., Mongoose or Prisma)
+│   ├── db/                       # Database connection & models (e.g. Drizzle)
 │   ├── interfaces/               # TypeScript types/interfaces (DTOs, contracts)
 │   ├── middlewares/             # Express middlewares (auth, error handling, validation)
 │   ├── routes/                  # Route definitions (API endpoints)
 │   ├── services/                # Business logic and reusable services
-│   ├── socket/                  # Real-time communication (e.g., socket.io setup)
 │   ├── utils/                   # Utility functions (formatters, helpers)
 │   ├── app.ts                   # Express app setup (middlewares, routers)
 │   └── index.ts                 # Entry point (start server, load envs)
